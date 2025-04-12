@@ -3,7 +3,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 public class Database {
-    public Connection get_connection(){
+    public Connection getConnection(){
 // ⚙️ Cambiá estos valores por los de tu entorno local
         String url = "jdbc:mysql://localhost:3306/notifications?serverTimezone=UTC";
         String user = "root";
@@ -12,10 +12,10 @@ public class Database {
         try {
             // 🟢 Intentamos conectar
             connection = DriverManager.getConnection(url, user, password);
-            System.out.println("✅ ¡Conexión exitosa a la base de datos!");
+            //System.out.println("✅ ¡Conexión exitosa a la base de datos!");
 
             // 🔒 Siempre cerramos la conexión cuando terminamos
-            connection.close();
+            //connection.close();
         } catch (SQLException e) {
             System.out.println("❌ Error al conectar a la base de datos.");
             e.printStackTrace();
