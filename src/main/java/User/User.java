@@ -1,12 +1,15 @@
-package main;
+package User;
+
+import Notification.Notification;
 
 import java.util.ArrayList;
 
 public class User {
+    private int iduser;
     private String email;
     private String pass;
     private ArrayList<Notification> notifications;
-    private int iduser;
+
 
     public int getIduser() {
         return iduser;
@@ -35,10 +38,12 @@ public class User {
 
 
     public ArrayList<Notification> getNotifications() {
+
         return notifications;
     }
 
     public void setNotifications(ArrayList<Notification> notifications) {
+
         this.notifications = notifications;
     }
 

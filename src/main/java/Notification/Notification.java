@@ -1,11 +1,11 @@
-package main;
+package Notification;
 
 public class Notification {
     private int idnotif;
     private String title;
     private String content;
     //private Chanel chanel;
-    //private User iduser;
+    private int iduser;
 
     public Notification(){
 
@@ -16,7 +16,7 @@ public class Notification {
         this.title = title;
         this.content = content;
         //this.chanel = chanel;
-        //this.iduser = iduser;
+        this.iduser = iduser;
     }
 
     public int getIdnotif() {

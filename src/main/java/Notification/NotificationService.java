@@ -1,5 +1,4 @@
-package main;
-
+package Notification;
 import java.util.Scanner;
 
 public class NotificationService {
