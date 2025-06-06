@@ -25,15 +25,15 @@ public class NotificationController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Notificacion creada exitosamente");
     }
 
-    @GetMapping("/notificacion/{idNoti}")
+    @GetMapping("/notification/{idNoti}")
     public ResponseEntity<Notification> getNotification(@PathVariable Integer idNoti, @RequestHeader(value="Authorization") String token) throws ErrorService {
-        Notification notification = notificationService.verNotificacionPorId(idNoti, token);
+        Notification notification = notificationService.getNotificationById(idNoti, token);
         return ResponseEntity.ok(notification);
     }
 
-    @GetMapping("/todas")
+    @GetMapping("/all")
     public ResponseEntity<?> getNotificationsByUser(@RequestHeader(value="Authorization") String token) {
-        List<Notification> notifications = notificationService.verNotificacionesPorUsuario(token);
+        List<Notification> notifications = notificationService.getNotificationsByUser(token);
         if(notifications == null || notifications.isEmpty()) {
             return ResponseEntity.ok("El usuario no tiene notificaciones");
         }
@@ -41,7 +41,7 @@ public class NotificationController {
     }
 
 
-    @PutMapping("/modificar/{idNoti}")
+    @PutMapping("/modify/{idNoti}")
     public ResponseEntity<?> modifyNotifications(@PathVariable Integer idNoti, @RequestHeader(value="Authorization") String token, @RequestBody NotificationDTO notificationDTO) throws ErrorService {
         notificationService.modifyNotification(notificationDTO, idNoti, token);
         return ResponseEntity.ok("Notificacion modificada exitosamente");
@@ -49,7 +49,7 @@ public class NotificationController {
 
 
 
-    @DeleteMapping("/eliminar/{idNoti}")
+    @DeleteMapping("/delete/{idNoti}")
     public ResponseEntity<?> deleteNotification(@PathVariable Integer idNoti, @RequestHeader(value="Authorization") String token) throws ErrorService{
         notificationService.delete(idNoti, token);
         return ResponseEntity.ok("Notificación eliminada");

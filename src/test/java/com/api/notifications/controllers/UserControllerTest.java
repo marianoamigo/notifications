@@ -45,7 +45,7 @@ public class UserControllerTest {
     public void verUsuario() {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
         ResponseEntity<Usuario> response = restTemplate.exchange(
-                "/api/usuarios/usuario/" + usuarioId,
+                "/api/users/user/" + usuarioId,
                 HttpMethod.GET,
                 entity,
                 Usuario.class);
@@ -63,7 +63,7 @@ public class UserControllerTest {
         request.setSegundaPass("12345678");
         HttpEntity<RegisterRequest> entity = new HttpEntity<>(request,headers);
         ResponseEntity<String> response = restTemplate.exchange(
-                "/api/usuarios/modificar/"+usuarioId,
+                "/api/users/modify/"+usuarioId,
                 HttpMethod.PUT,
                 entity,
                 String.class);

@@ -31,15 +31,15 @@ import java.util.List;
 @ExtendWith(MockitoExtension.class)
 public class NotificationControllerTest {
     @Autowired
-    private INotificationRepository notificacionRepository;
+    private INotificationRepository notificationRepository;
     @Autowired
     private TestRestTemplate restTemplate;
     @Autowired
-    private IUserRepository usuarioRepository;
+    private IUserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    private Integer usuarioId;
-    private Integer notificacionId;
+    private Integer userId;
+    private Integer notificationId;
     @MockitoBean
     private EmailClient emailClient;
     @MockitoBean
@@ -54,27 +54,27 @@ public class NotificationControllerTest {
 
     @BeforeEach
     public void setUpUser() {
-        Usuario usuario1 = usuarioRepository.findByMail("test@mail.com").orElseGet(() -> {
-            Usuario usuario = new Usuario();
-            usuario.setMail("test@mail.com");
-            usuario.setPass(passwordEncoder.encode("12345678"));
-            return usuarioRepository.save(usuario);
+        notificationRepository.deleteAll();
+        userRepository.deleteAll();
+        Usuario user1 = userRepository.findByMail("test@mail.com").orElseGet(() -> {
+            Usuario user = new Usuario();
+            user.setMail("test@mail.com");
+            user.setPass(passwordEncoder.encode("12345678"));
+            return userRepository.save(user);
         });
-        usuarioId = usuario1.getId();
+        userId = user1.getId();
         headers = authUtilTest.createHeadersWithToken();
-        notificacionId = 1;
-        Notification notification = notificacionRepository.findById(notificacionId).orElseGet(() ->{
-            Notification noti = new Notification();
-            noti.setTitle("Titulo Test");
-            noti.setBody("Cuerpo Test");
-            noti.setUser(usuario1);
-            noti.setChannel("email");
-            return notificacionRepository.save(noti);
-        });
+        Notification noti = new Notification();
+        noti.setTitle("Titulo Test");
+        noti.setBody("Cuerpo Test");
+        noti.setUser(user1);
+        noti.setChannel("email");
+
+        notificationId = notificationRepository.save(noti).getId();
     }
 
     @Test
-    public void registrar(){
+    public void register(){
         NotificationDTO noti = new NotificationDTO();
         noti.setTitle("Titulo Test");
         noti.setBody("Cuerpo Test");
@@ -82,13 +82,13 @@ public class NotificationControllerTest {
 
         //simular lo que se recibe de microservicio
         NotificationDTO resultadoClient = new NotificationDTO();
-        setearResultadoClient(resultadoClient);
+        setClientResult(resultadoClient);
 
         //mockear la respuesta del cliente
         Mockito.when(emailClient.send(Mockito.any())).thenReturn(ResponseEntity.ok(resultadoClient));
 
         HttpEntity<NotificationDTO> entity = new HttpEntity<>(noti, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity("/api/notificaciones/registrar", entity, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/notifications/register", entity, String.class);
 
 
         Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -96,7 +96,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void modificar() {
+    public void modify() {
         NotificationDTO noti = new NotificationDTO();
         noti.setTitle("Titulo modificado");
         noti.setBody("Cuerpo modificado");
@@ -104,13 +104,13 @@ public class NotificationControllerTest {
 
         //simular lo que se recibe de microservicio
         NotificationDTO resultadoClient = new NotificationDTO();
-        setearResultadoClient(resultadoClient);
+        setClientResult(resultadoClient);
 
         //mockear la respuesta del cliente
         Mockito.when(smsClient.send(Mockito.any())).thenReturn(ResponseEntity.ok(resultadoClient));
 
         HttpEntity<NotificationDTO> entity = new HttpEntity<>(noti,headers);
-        ResponseEntity<String> response = restTemplate.exchange("/api/notificaciones/modificar/"+notificacionId, HttpMethod.PUT, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange("/api/notifications/modify/"+ notificationId, HttpMethod.PUT, entity, String.class);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals("Notificacion modificada exitosamente", response.getBody());
@@ -118,10 +118,10 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void verNotificacion() {
+    public void getNotification() {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
         ResponseEntity<Notification> response = restTemplate.exchange(
-                "/api/notificaciones/notificacion/" + notificacionId,
+                "/api/notifications/notification/" + notificationId,
                 HttpMethod.GET,
                 entity,
                 Notification.class);
@@ -130,10 +130,10 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void verTodasPorUsuario() {
+    public void getNotificationsByUser() {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
         ResponseEntity<List<Notification>> response = restTemplate.exchange(
-                "/api/notificaciones/todas",
+                "/api/notifications/all",
                 HttpMethod.GET,
                 entity,
                 new ParameterizedTypeReference<List<Notification>>() {});
@@ -145,10 +145,10 @@ public class NotificationControllerTest {
 
 
     @Test
-    public void eliminar() {
+    public void delete() {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(
-                "/api/notificaciones/eliminar/"+notificacionId,
+                "/api/notifications/delete/"+ notificationId,
                 HttpMethod.DELETE,
                 entity,
                 String.class);
@@ -157,7 +157,7 @@ public class NotificationControllerTest {
         Assertions.assertNotNull(response.getBody());
     }
 
-    private void setearResultadoClient(NotificationDTO resultadoClient) {
+    private void setClientResult(NotificationDTO resultadoClient) {
         resultadoClient.setTitle("Titulo"); //no deberian cambiar en el microservicio
         resultadoClient.setBody("Cuerpo");//
         resultadoClient.setChannel("email");//

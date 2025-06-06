@@ -23,13 +23,16 @@ The system has to allow every logged user to manage and send notifications by di
 # How to run the APP
 
 ```
-code for run the app (missing)
+docker-compose up
+
 ```
 
 # How to run the tests
 
 ```
-code for run the tests (missing)
+docker-compose -f docker-compose.test.yml up
+
+docker-compose -f docker-compose.test.yml run --rm app_notifications ./mvnw clean verify
 
 ```
 
@@ -65,7 +68,7 @@ if the controller provide the proper answer the has passed.
 
 ## Route
 
-- : [!API Swagger] (http://localhost:8080/swagger/index.html#)
+- : [!API Swagger] (http://localhost:8080/swagger-ui/index.html#/)
 
 ## Env vars should be defined 
 

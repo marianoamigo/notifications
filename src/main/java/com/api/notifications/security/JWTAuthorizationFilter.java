@@ -42,7 +42,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             System.out.println("User ID decodificado: " + userId);
             if (userId != null) {
                 try {
-                    Usuario usuario = userService.verUsuarioPorId(Integer.valueOf(userId), token);
+                    Usuario usuario = userService.getUserById(Integer.valueOf(userId), token);
                     if (usuario != null) {
                         UserDetails userDetails = new User(usuario.getMail(), "", new ArrayList<>());
                         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

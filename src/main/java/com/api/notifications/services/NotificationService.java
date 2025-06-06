@@ -17,23 +17,23 @@ import java.util.Optional;
 @Service
 public class NotificationService {
     @Autowired
-    private IUserRepository usuarioRepository;
+    private IUserRepository userRepository;
     @Autowired
     private JWTUtil jwtUtil;
     @Autowired
-    private INotificationRepository notificacionRepository;
+    private INotificationRepository notificationRepository;
     private final ChannelFactory channelFactory;
 
 
     public NotificationService(
             ChannelFactory channelFactory,
-            IUserRepository usuarioRepository,
-            INotificationRepository notificacionRepository,
+            IUserRepository userRepository,
+            INotificationRepository notificationRepository,
             JWTUtil jwtUtil
     ) {
         this.channelFactory = channelFactory;
-        this.usuarioRepository = usuarioRepository;
-        this.notificacionRepository = notificacionRepository;
+        this.userRepository = userRepository;
+        this.notificationRepository = notificationRepository;
         this.jwtUtil = jwtUtil;
     }
 
@@ -45,7 +45,7 @@ public class NotificationService {
         validateNotification(notificationDTO);
         Notification notification = new Notification();
         Canal canalCorrecto = channelFactory.getChannel(notificationDTO.getChannel());
-        Optional<Usuario> respuesta = usuarioRepository.findById(userId);
+        Optional<Usuario> respuesta = userRepository.findById(userId);
         if(!respuesta.isPresent()) {
             throw new ErrorService("No se encontró el usuario");
         }
@@ -61,15 +61,15 @@ public class NotificationService {
         } else {
             throw new ErrorService("Debe elegir un canal válido");
         }
-        notificacionRepository.save(notification);
+        notificationRepository.save(notification);
     }
 
 
 
-    public Notification verNotificacionPorId(Integer id, String token)  throws  ErrorService{
+    public Notification getNotificationById(Integer id, String token)  throws  ErrorService{
         token = jwtUtil.acortaToken(token);
         String validado = jwtUtil.validaToken(token);
-        Optional <Notification> notificacionOptional = notificacionRepository.findById(id);
+        Optional <Notification> notificacionOptional = notificationRepository.findById(id);
         if(notificacionOptional.isPresent()) {
            Notification notificationExistente = notificacionOptional.get();
            if (validado.equals(String.valueOf(notificationExistente.getUser().getId()))) {
@@ -78,10 +78,10 @@ public class NotificationService {
         } else throw new ErrorService("No se encontró la notificación");
     }
 
-    public List<Notification> verNotificacionesPorUsuario(String token) {
+    public List<Notification> getNotificationsByUser(String token) {
         token = jwtUtil.acortaToken(token);
         String validado = jwtUtil.validaToken(token);
-        return notificacionRepository.findByUsuario_Id(Integer.valueOf(validado));
+        return notificationRepository.findByUser_Id(Integer.valueOf(validado));
     }
 
 
@@ -90,8 +90,9 @@ public class NotificationService {
         token = jwtUtil.acortaToken(token);
         String validado = jwtUtil.validaToken(token);
         Integer idUser = Integer.valueOf(validado);
-        Optional<Notification> respuesta = notificacionRepository.findById(idNoti);
+        Optional<Notification> respuesta = notificationRepository.findById(idNoti);
         if (!respuesta.isPresent()) {
+            System.out.println("DEBUG - No se encontró notificación con id: " + idNoti);
             throw new ErrorService("No se encontró la notificación");
         }
         Notification notificationExistente = respuesta.get();
@@ -107,7 +108,7 @@ public class NotificationService {
 
             setAll(notificationExistente,notificacionDTO,canalCorrecto);
         } else throw new ErrorService("Debe elegir un canal válido");
-        notificacionRepository.save(notificationExistente);
+        notificationRepository.save(notificationExistente);
         }
 
 
@@ -116,11 +117,11 @@ public class NotificationService {
         token = jwtUtil.acortaToken(token);
         String validado = jwtUtil.validaToken(token);
         Integer idUser = Integer.valueOf(validado);
-        Optional<Notification> respuesta = notificacionRepository.findById(idNoti);
+        Optional<Notification> respuesta = notificationRepository.findById(idNoti);
         if(respuesta.isPresent()) {
             Notification notificationABorrar = respuesta.get();
             validateUser(notificationABorrar.getUser().getId(), idUser);
-            notificacionRepository.delete(notificationABorrar);
+            notificationRepository.delete(notificationABorrar);
         } else throw new ErrorService("No se encontró la notificación") ;
     }
 

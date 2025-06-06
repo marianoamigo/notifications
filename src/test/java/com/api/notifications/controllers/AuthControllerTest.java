@@ -29,21 +29,21 @@ public class AuthControllerTest {
     @BeforeEach
     public void setUpUser() {
         usuarioRepository.findByMail("test@mail.com").orElseGet(() -> {
-            Usuario usuario = new Usuario();
-            usuario.setMail("test@mail.com");
-            usuario.setPass(passwordEncoder.encode("12345678"));
-            return usuarioRepository.save(usuario);
+            Usuario user = new Usuario();
+            user.setMail("test@mail.com");
+            user.setPass(passwordEncoder.encode("12345678"));
+            return usuarioRepository.save(user);
         });
     }
 
     @Test
-    public void registrar(){
+    public void register(){
         RegisterRequest request = new RegisterRequest();
         request.setMail("nuevo@mail.com");
         request.setPass("12345678");
         request.setSegundaPass("12345678");
 
-        ResponseEntity<String> response = restTemplate.postForEntity("/api/auth/registrar", request, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/auth/register", request, String.class);
 
         Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
         Assertions.assertEquals("Usuario registrado con éxito", response.getBody());

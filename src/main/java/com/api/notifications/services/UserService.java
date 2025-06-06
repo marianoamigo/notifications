@@ -24,28 +24,28 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private IUserRepository usuarioRepository;
+    private IUserRepository userRepository;
 
     @Transactional
     public void register(RegisterRequest request) throws ErrorService {
-        validarCredenciales(request);
+        validateCredentials(request);
         String hash = passwordEncoder.encode(request.getPass());
         request.setPass(hash);
         Usuario nuevo = new Usuario(request.getMail(),request.getPass());
-        usuarioRepository.save(nuevo);
+        userRepository.save(nuevo);
     }
 
     public String login(LoginRequest loginRequest) throws ErrorService {
-        Usuario usuarioLogueado = obtenerUsuarioPorCredenciales(loginRequest);
+        Usuario usuarioLogueado = getUserByCredentials(loginRequest);
         String token = jwtUtil.create(String.valueOf(usuarioLogueado.getId()), usuarioLogueado.getMail());
         return token;
     }
 
-    public Usuario verUsuarioPorId(Integer id, String token)  throws ErrorService {
+    public Usuario getUserById(Integer id, String token)  throws ErrorService {
         token = jwtUtil.acortaToken(token);
         String validado = jwtUtil.validaToken(token);
         if (validado.equals(String.valueOf(id))) {
-            Optional<Usuario> respuesta = usuarioRepository.findById(id);
+            Optional<Usuario> respuesta = userRepository.findById(id);
             if(!respuesta.isEmpty()){
             Usuario encontrado = respuesta.get();
             return encontrado;
@@ -54,24 +54,24 @@ public class UserService {
     }
 
     @Transactional
-    public void modificar(Integer id, RegisterRequest request, String token) throws ErrorService {
+    public void modify(Integer id, RegisterRequest request, String token) throws ErrorService {
         token = jwtUtil.acortaToken(token);
         String validado = jwtUtil.validaToken(token);
         if (validado.equals(String.valueOf(id))) {
-            validarCredenciales(request);
+            validateCredentials(request);
             String hash = passwordEncoder.encode(request.getPass());
-            Optional<Usuario> respuesta = usuarioRepository.findById(id);
+            Optional<Usuario> respuesta = userRepository.findById(id);
             if (respuesta.isPresent()) {
                 Usuario usuarioExistente = respuesta.get();
                 usuarioExistente.setMail(request.getMail());
                 usuarioExistente.setPass(hash);
-                usuarioRepository.save(usuarioExistente);
+                userRepository.save(usuarioExistente);
             } else throw new ErrorService("No se encontró el usuario con ID: " + id);
         } else throw new ErrorService("Token inválido");
     }
 
-    public Usuario obtenerUsuarioPorCredenciales(LoginRequest loginRequest) throws ErrorService {
-        Optional<Usuario> optionalUsuario = usuarioRepository.findByMail(loginRequest.getMail());
+    public Usuario getUserByCredentials(LoginRequest loginRequest) throws ErrorService {
+        Optional<Usuario> optionalUsuario = userRepository.findByMail(loginRequest.getMail());
         if (optionalUsuario.isPresent()) {
             Usuario usuarioExistente = optionalUsuario.get();
             Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
@@ -86,7 +86,7 @@ public class UserService {
         }
     }
 
-    public void validarCredenciales(RegisterRequest request) throws ErrorService {
+    public void validateCredentials(RegisterRequest request) throws ErrorService {
         if (request.getMail() == null || request.getMail().isEmpty() || !request.getMail().contains("@")) {
             throw new ErrorService("El mail no puede ser nulo, y debe ser con formato ejemplo@ejemplo.com");
         }

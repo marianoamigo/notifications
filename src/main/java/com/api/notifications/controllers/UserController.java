@@ -12,7 +12,7 @@ import com.api.notifications.models.Usuario;
 
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
@@ -22,16 +22,16 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/usuario/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<Usuario> getUser(@PathVariable Integer id, @RequestHeader(value="Authorization") String token) throws ErrorService {
-        Usuario usuario = userService.verUsuarioPorId(id, token);
-        return ResponseEntity.ok(usuario);
+        Usuario user = userService.getUserById(id, token);
+        return ResponseEntity.ok(user);
     }
 
 
-    @PutMapping("/modificar/{id}")
-    public ResponseEntity<?> modificarUsuario(@PathVariable Integer id, @RequestBody RegisterRequest request, @RequestHeader(value="Authorization") String token) throws ErrorService {
-        userService.modificar(id, request, token);
+    @PutMapping("/modify/{id}")
+    public ResponseEntity<?> modifyUser(@PathVariable Integer id, @RequestBody RegisterRequest request, @RequestHeader(value="Authorization") String token) throws ErrorService {
+        userService.modify(id, request, token);
         return ResponseEntity.ok("Usuario modificado con éxito");
     }
 
