@@ -1,6 +1,6 @@
 package com.api.notifications.controllers;
 
-import com.api.notifications.models.Notification;
+import com.api.notifications.models.NotificationModel;
 import com.api.notifications.errors.ErrorService;
 import com.api.notifications.services.NotificationService;
 import dto.NotificationDTO;
@@ -26,18 +26,18 @@ public class NotificationController {
     }
 
     @GetMapping("/notification/{idNoti}")
-    public ResponseEntity<Notification> getNotification(@PathVariable Integer idNoti, @RequestHeader(value="Authorization") String token) throws ErrorService {
-        Notification notification = notificationService.getNotificationById(idNoti, token);
-        return ResponseEntity.ok(notification);
+    public ResponseEntity<NotificationModel> getNotification(@PathVariable Integer idNoti, @RequestHeader(value="Authorization") String token) throws ErrorService {
+        NotificationModel notificationModel = notificationService.getNotificationById(idNoti, token);
+        return ResponseEntity.ok(notificationModel);
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> getNotificationsByUser(@RequestHeader(value="Authorization") String token) {
-        List<Notification> notifications = notificationService.getNotificationsByUser(token);
-        if(notifications == null || notifications.isEmpty()) {
+        List<NotificationModel> notificationModels = notificationService.getNotificationsByUser(token);
+        if(notificationModels == null || notificationModels.isEmpty()) {
             return ResponseEntity.ok("El usuario no tiene notificaciones");
         }
-        return ResponseEntity.ok(notifications);
+        return ResponseEntity.ok(notificationModels);
     }
 
 

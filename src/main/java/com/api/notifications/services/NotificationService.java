@@ -1,7 +1,7 @@
 package com.api.notifications.services;
 
 import com.api.notifications.errors.ErrorService;
-import com.api.notifications.models.Notification;
+import com.api.notifications.models.NotificationModel;
 import com.api.notifications.models.UserModel;
 import com.api.notifications.repositories.INotificationRepository;
 import com.api.notifications.repositories.IUserRepository;
@@ -43,7 +43,7 @@ public class NotificationService {
         String validado = jwtUtil.validaToken(token);
         Integer userId = Integer.valueOf(validado);
         validateNotification(notificationDTO);
-        Notification notification = new Notification();
+        NotificationModel notification = new NotificationModel();
         Canal canalCorrecto = channelFactory.getChannel(notificationDTO.getChannel());
         Optional<UserModel> respuesta = userRepository.findById(userId);
         if(!respuesta.isPresent()) {
@@ -66,19 +66,19 @@ public class NotificationService {
 
 
 
-    public Notification getNotificationById(Integer id, String token)  throws  ErrorService{
+    public NotificationModel getNotificationById(Integer id, String token)  throws  ErrorService{
         token = jwtUtil.acortaToken(token);
         String validado = jwtUtil.validaToken(token);
-        Optional <Notification> notificacionOptional = notificationRepository.findById(id);
+        Optional <NotificationModel> notificacionOptional = notificationRepository.findById(id);
         if(notificacionOptional.isPresent()) {
-           Notification notificationExistente = notificacionOptional.get();
+           NotificationModel notificationExistente = notificacionOptional.get();
            if (validado.equals(String.valueOf(notificationExistente.getUser().getId()))) {
                return notificationExistente;
            } else throw new ErrorService("Token inválido");
         } else throw new ErrorService("No se encontró la notificación");
     }
 
-    public List<Notification> getNotificationsByUser(String token) {
+    public List<NotificationModel> getNotificationsByUser(String token) {
         token = jwtUtil.acortaToken(token);
         String validado = jwtUtil.validaToken(token);
         return notificationRepository.findByUser_Id(Integer.valueOf(validado));
@@ -90,12 +90,12 @@ public class NotificationService {
         token = jwtUtil.acortaToken(token);
         String validado = jwtUtil.validaToken(token);
         Integer idUser = Integer.valueOf(validado);
-        Optional<Notification> respuesta = notificationRepository.findById(idNoti);
+        Optional<NotificationModel> respuesta = notificationRepository.findById(idNoti);
         if (!respuesta.isPresent()) {
             System.out.println("DEBUG - No se encontró notificación con id: " + idNoti);
             throw new ErrorService("No se encontró la notificación");
         }
-        Notification notificationExistente = respuesta.get();
+        NotificationModel notificationExistente = respuesta.get();
 
         validateNotification(notificacionDTO);
         validateUser(notificationExistente.getUser().getId(), idUser);
@@ -117,9 +117,9 @@ public class NotificationService {
         token = jwtUtil.acortaToken(token);
         String validado = jwtUtil.validaToken(token);
         Integer idUser = Integer.valueOf(validado);
-        Optional<Notification> respuesta = notificationRepository.findById(idNoti);
+        Optional<NotificationModel> respuesta = notificationRepository.findById(idNoti);
         if(respuesta.isPresent()) {
-            Notification notificationABorrar = respuesta.get();
+            NotificationModel notificationABorrar = respuesta.get();
             validateUser(notificationABorrar.getUser().getId(), idUser);
             notificationRepository.delete(notificationABorrar);
         } else throw new ErrorService("No se encontró la notificación") ;
@@ -142,15 +142,15 @@ public class NotificationService {
         }
     }
 
-    private void setAll(Notification notification, NotificationDTO notificacionDTO, Canal canalCorrecto) {
-        notification.setTitle(notificacionDTO.getTitle());
-        notification.setBody(notificacionDTO.getBody());
-        notification.setChannel(canalCorrecto.getName());
-        notification.setTokenDevice(notificacionDTO.getTokenDevice());
-        notification.setSendState(notificacionDTO.isSendState());
-        notification.setNumSend(notificacionDTO.getNumSend());
-        notification.setSendDate(notificacionDTO.getSendDate());
-        notification.setRecipient(notificacionDTO.getRecipient());
+    private void setAll(NotificationModel notificationModel, NotificationDTO notificacionDTO, Canal canalCorrecto) {
+        notificationModel.setTitle(notificacionDTO.getTitle());
+        notificationModel.setBody(notificacionDTO.getBody());
+        notificationModel.setChannel(canalCorrecto.getName());
+        notificationModel.setTokenDevice(notificacionDTO.getTokenDevice());
+        notificationModel.setSendState(notificacionDTO.isSendState());
+        notificationModel.setNumSend(notificacionDTO.getNumSend());
+        notificationModel.setSendDate(notificacionDTO.getSendDate());
+        notificationModel.setRecipient(notificacionDTO.getRecipient());
     }
 
 

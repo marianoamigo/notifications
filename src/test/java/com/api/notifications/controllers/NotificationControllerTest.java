@@ -2,7 +2,7 @@ package com.api.notifications.controllers;
 import com.api.notifications.client.EmailClient;
 import com.api.notifications.client.PushClient;
 import com.api.notifications.client.SmsClient;
-import com.api.notifications.models.Notification;
+import com.api.notifications.models.NotificationModel;
 import com.api.notifications.models.UserModel;
 import com.api.notifications.repositories.INotificationRepository;
 import com.api.notifications.repositories.IUserRepository;
@@ -64,7 +64,7 @@ public class NotificationControllerTest {
         });
         userId = user1.getId();
         headers = authUtilTest.createHeadersWithToken();
-        Notification noti = new Notification();
+        NotificationModel noti = new NotificationModel();
         noti.setTitle("Titulo Test");
         noti.setBody("Cuerpo Test");
         noti.setUser(user1);
@@ -120,11 +120,11 @@ public class NotificationControllerTest {
     @Test
     public void getNotification() {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
-        ResponseEntity<Notification> response = restTemplate.exchange(
+        ResponseEntity<NotificationModel> response = restTemplate.exchange(
                 "/api/notifications/notification/" + notificationId,
                 HttpMethod.GET,
                 entity,
-                Notification.class);
+                NotificationModel.class);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
     }
@@ -132,11 +132,11 @@ public class NotificationControllerTest {
     @Test
     public void getNotificationsByUser() {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
-        ResponseEntity<List<Notification>> response = restTemplate.exchange(
+        ResponseEntity<List<NotificationModel>> response = restTemplate.exchange(
                 "/api/notifications/all",
                 HttpMethod.GET,
                 entity,
-                new ParameterizedTypeReference<List<Notification>>() {});
+                new ParameterizedTypeReference<List<NotificationModel>>() {});
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
         Assertions.assertFalse(response.getBody().isEmpty());

@@ -1,7 +1,7 @@
 # Java + Spring Backend Challenge
 
 You have to develop a basic Notifications management system for authenticated users. 
-The system has to allow every logged user to manage and send notifications by different channels. 
+The system has to allow every logged user to manage and send notificationModels by different channels. 
 
 ### Features 
 

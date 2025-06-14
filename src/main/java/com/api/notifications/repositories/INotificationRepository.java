@@ -1,6 +1,6 @@
 package com.api.notifications.repositories;
 
-import com.api.notifications.models.Notification;
+import com.api.notifications.models.NotificationModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface INotificationRepository extends JpaRepository<Notification, Integer> {
+public interface INotificationRepository extends JpaRepository<NotificationModel, Integer> {
 
-    List<Notification> findByUser_Id(Integer userId);
+    List<NotificationModel> findByUser_Id(Integer userId);
 
-    Optional<Notification> findById(Integer id);
+    Optional<NotificationModel> findById(Integer id);
 }

@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.api</groupId>
-	<artifactId>notifications</artifactId>
+	<artifactId>notificationModels</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
-	<name>notifications</name>
+	<name>notificationModels</name>
 	<description>API REST for challenge with Spring boot</description>
 	<properties>
 		<java.version>21</java.version>
@@ -139,6 +139,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>app_notifications</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
