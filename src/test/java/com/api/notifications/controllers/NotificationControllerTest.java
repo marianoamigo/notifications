@@ -3,7 +3,7 @@ import com.api.notifications.client.EmailClient;
 import com.api.notifications.client.PushClient;
 import com.api.notifications.client.SmsClient;
 import com.api.notifications.models.Notification;
-import com.api.notifications.models.Usuario;
+import com.api.notifications.models.UserModel;
 import com.api.notifications.repositories.INotificationRepository;
 import com.api.notifications.repositories.IUserRepository;
 import com.api.notifications.utils.AuthUtilTest;
@@ -56,8 +56,8 @@ public class NotificationControllerTest {
     public void setUpUser() {
         notificationRepository.deleteAll();
         userRepository.deleteAll();
-        Usuario user1 = userRepository.findByMail("test@mail.com").orElseGet(() -> {
-            Usuario user = new Usuario();
+        UserModel user1 = userRepository.findByMail("test@mail.com").orElseGet(() -> {
+            UserModel user = new UserModel();
             user.setMail("test@mail.com");
             user.setPass(passwordEncoder.encode("12345678"));
             return userRepository.save(user);

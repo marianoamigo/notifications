@@ -10,7 +10,7 @@ public class PushClient {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public ResponseEntity<NotificationDTO> send(NotificationDTO notificacion) {
-        String url = "http://push:8084/api/push/send";
+        String url = "http://localhost:8084/api/push/send";
         return restTemplate.postForEntity(url,notificacion, NotificationDTO.class);
     }
 }

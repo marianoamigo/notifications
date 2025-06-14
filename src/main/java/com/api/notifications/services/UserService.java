@@ -3,7 +3,7 @@ package com.api.notifications.services;
 import com.api.notifications.dtos.LoginRequest;
 import com.api.notifications.dtos.RegisterRequest;
 import com.api.notifications.errors.ErrorService;
-import com.api.notifications.models.Usuario;
+import com.api.notifications.models.UserModel;
 import com.api.notifications.repositories.IUserRepository;
 import com.api.notifications.utils.JWTUtil;
 import com.api.notifications.utils.PasswordEncoder;
@@ -31,23 +31,23 @@ public class UserService {
         validateCredentials(request);
         String hash = passwordEncoder.encode(request.getPass());
         request.setPass(hash);
-        Usuario nuevo = new Usuario(request.getMail(),request.getPass());
+        UserModel nuevo = new UserModel(request.getMail(),request.getPass());
         userRepository.save(nuevo);
     }
 
     public String login(LoginRequest loginRequest) throws ErrorService {
-        Usuario usuarioLogueado = getUserByCredentials(loginRequest);
-        String token = jwtUtil.create(String.valueOf(usuarioLogueado.getId()), usuarioLogueado.getMail());
+        UserModel userLogueado = getUserByCredentials(loginRequest);
+        String token = jwtUtil.create(String.valueOf(userLogueado.getId()), userLogueado.getMail());
         return token;
     }
 
-    public Usuario getUserById(Integer id, String token)  throws ErrorService {
+    public UserModel getUserById(Integer id, String token)  throws ErrorService {
         token = jwtUtil.acortaToken(token);
         String validado = jwtUtil.validaToken(token);
         if (validado.equals(String.valueOf(id))) {
-            Optional<Usuario> respuesta = userRepository.findById(id);
+            Optional<UserModel> respuesta = userRepository.findById(id);
             if(!respuesta.isEmpty()){
-            Usuario encontrado = respuesta.get();
+            UserModel encontrado = respuesta.get();
             return encontrado;
             } else throw new ErrorService("No se encontró el usuario con ID: " + id);
         } else throw new ErrorService("Token inválido");
@@ -60,24 +60,24 @@ public class UserService {
         if (validado.equals(String.valueOf(id))) {
             validateCredentials(request);
             String hash = passwordEncoder.encode(request.getPass());
-            Optional<Usuario> respuesta = userRepository.findById(id);
+            Optional<UserModel> respuesta = userRepository.findById(id);
             if (respuesta.isPresent()) {
-                Usuario usuarioExistente = respuesta.get();
-                usuarioExistente.setMail(request.getMail());
-                usuarioExistente.setPass(hash);
-                userRepository.save(usuarioExistente);
+                UserModel userModelExistente = respuesta.get();
+                userModelExistente.setMail(request.getMail());
+                userModelExistente.setPass(hash);
+                userRepository.save(userModelExistente);
             } else throw new ErrorService("No se encontró el usuario con ID: " + id);
         } else throw new ErrorService("Token inválido");
     }
 
-    public Usuario getUserByCredentials(LoginRequest loginRequest) throws ErrorService {
-        Optional<Usuario> optionalUsuario = userRepository.findByMail(loginRequest.getMail());
-        if (optionalUsuario.isPresent()) {
-            Usuario usuarioExistente = optionalUsuario.get();
+    public UserModel getUserByCredentials(LoginRequest loginRequest) throws ErrorService {
+        Optional<UserModel> optionalUser = userRepository.findByMail(loginRequest.getMail());
+        if (optionalUser.isPresent()) {
+            UserModel userFound = optionalUser.get();
             Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-            boolean verificado = argon2.verify(usuarioExistente.getPass(),loginRequest.getPass());
-            if(verificado) {
-                return usuarioExistente;
+            boolean verified = argon2.verify(userFound.getPass(),loginRequest.getPass());
+            if(verified) {
+                return userFound;
             } else {
                 throw new ErrorService("Las credenciales son inválidas");
             }

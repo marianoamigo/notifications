@@ -24,7 +24,7 @@ public class Notification {
     @Getter @Setter
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Usuario user;
+    private UserModel user;
     @Getter @Setter @Column(name= "destination")
     private String recipient;
     @Getter @Setter @Column(name= "num_send")

@@ -11,7 +11,7 @@ public class EmailClient {
 
 
     public ResponseEntity<NotificationDTO> send(NotificationDTO notificacion) {
-        String url = "http://email:8082/api/email/send";
+        String url = "http://localhost:8082/api/email/send";
         return restTemplate.postForEntity(url, notificacion, NotificationDTO.class);
     }
 }

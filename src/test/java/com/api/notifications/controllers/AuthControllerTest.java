@@ -2,7 +2,7 @@ package com.api.notifications.controllers;
 
 import com.api.notifications.dtos.LoginRequest;
 import com.api.notifications.dtos.RegisterRequest;
-import com.api.notifications.models.Usuario;
+import com.api.notifications.models.UserModel;
 import com.api.notifications.repositories.IUserRepository;
 import com.api.notifications.utils.PasswordEncoder;
 import org.junit.jupiter.api.Assertions;
@@ -29,7 +29,7 @@ public class AuthControllerTest {
     @BeforeEach
     public void setUpUser() {
         usuarioRepository.findByMail("test@mail.com").orElseGet(() -> {
-            Usuario user = new Usuario();
+            UserModel user = new UserModel();
             user.setMail("test@mail.com");
             user.setPass(passwordEncoder.encode("12345678"));
             return usuarioRepository.save(user);

@@ -1,6 +1,6 @@
 package com.api.notifications.security;
 
-import com.api.notifications.models.Usuario;
+import com.api.notifications.models.UserModel;
 import com.api.notifications.errors.ErrorService;
 import com.api.notifications.services.UserService;
 import com.api.notifications.utils.JWTUtil;
@@ -42,9 +42,9 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             System.out.println("User ID decodificado: " + userId);
             if (userId != null) {
                 try {
-                    Usuario usuario = userService.getUserById(Integer.valueOf(userId), token);
-                    if (usuario != null) {
-                        UserDetails userDetails = new User(usuario.getMail(), "", new ArrayList<>());
+                    UserModel userModel = userService.getUserById(Integer.valueOf(userId), token);
+                    if (userModel != null) {
+                        UserDetails userDetails = new User(userModel.getMail(), "", new ArrayList<>());
                         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                         SecurityContextHolder.getContext().setAuthentication(auth);
                     }

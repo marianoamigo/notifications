@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="user")
-public class Usuario {
+@Table(name="app_user")
+public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +17,12 @@ public class Usuario {
     @Getter @Setter @Column(name= "pass")
     private String pass;
 
-    public Usuario(){}
-    public Usuario(String mail, String pass) {
+    public UserModel(){}
+    public UserModel(String mail, String pass) {
         this.mail = mail;
         this.pass = pass;
     }
-    public Usuario(Integer id,String mail, String pass) {
+    public UserModel(Integer id, String mail, String pass) {
         this.id = id;
         this.mail = mail;
         this.pass = pass;

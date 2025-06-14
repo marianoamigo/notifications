@@ -2,7 +2,7 @@ package com.api.notifications.services;
 
 import com.api.notifications.errors.ErrorService;
 import com.api.notifications.models.Notification;
-import com.api.notifications.models.Usuario;
+import com.api.notifications.models.UserModel;
 import com.api.notifications.repositories.INotificationRepository;
 import com.api.notifications.repositories.IUserRepository;
 import com.api.notifications.utils.JWTUtil;
@@ -45,7 +45,7 @@ public class NotificationService {
         validateNotification(notificationDTO);
         Notification notification = new Notification();
         Canal canalCorrecto = channelFactory.getChannel(notificationDTO.getChannel());
-        Optional<Usuario> respuesta = userRepository.findById(userId);
+        Optional<UserModel> respuesta = userRepository.findById(userId);
         if(!respuesta.isPresent()) {
             throw new ErrorService("No se encontró el usuario");
         }

@@ -1,7 +1,7 @@
 package com.api.notifications.controllers;
 
 import com.api.notifications.dtos.RegisterRequest;
-import com.api.notifications.models.Usuario;
+import com.api.notifications.models.UserModel;
 import com.api.notifications.repositories.IUserRepository;
 import com.api.notifications.utils.AuthUtilTest;
 import com.api.notifications.utils.PasswordEncoder;
@@ -31,24 +31,24 @@ public class UserControllerTest {
 
     @BeforeEach
     public void setUpUser() {
-        Usuario usuario1 = usuarioRepository.findByMail("test@mail.com").orElseGet(() -> {
-            Usuario usuario = new Usuario();
-            usuario.setMail("test@mail.com");
-            usuario.setPass(passwordEncoder.encode("12345678"));
-            return usuarioRepository.save(usuario);
+        UserModel userModel1 = usuarioRepository.findByMail("test@mail.com").orElseGet(() -> {
+            UserModel userModel = new UserModel();
+            userModel.setMail("test@mail.com");
+            userModel.setPass(passwordEncoder.encode("12345678"));
+            return usuarioRepository.save(userModel);
         });
-        usuarioId = usuario1.getId();
+        usuarioId = userModel1.getId();
         headers = authUtilTest.createHeadersWithToken();
     }
 
     @Test
     public void verUsuario() {
         HttpEntity<Void> entity = new HttpEntity<>(headers);
-        ResponseEntity<Usuario> response = restTemplate.exchange(
+        ResponseEntity<UserModel> response = restTemplate.exchange(
                 "/api/users/user/" + usuarioId,
                 HttpMethod.GET,
                 entity,
-                Usuario.class);
+                UserModel.class);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertNotNull(response.getBody());
         Assertions.assertEquals("test@mail.com",response.getBody().getMail());

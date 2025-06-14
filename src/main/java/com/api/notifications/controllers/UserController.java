@@ -8,7 +8,7 @@ import com.api.notifications.utils.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.api.notifications.models.Usuario;
+import com.api.notifications.models.UserModel;
 
 
 @RestController
@@ -23,8 +23,8 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<Usuario> getUser(@PathVariable Integer id, @RequestHeader(value="Authorization") String token) throws ErrorService {
-        Usuario user = userService.getUserById(id, token);
+    public ResponseEntity<UserModel> getUser(@PathVariable Integer id, @RequestHeader(value="Authorization") String token) throws ErrorService {
+        UserModel user = userService.getUserById(id, token);
         return ResponseEntity.ok(user);
     }
 

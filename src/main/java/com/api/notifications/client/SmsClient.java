@@ -9,7 +9,7 @@ public class SmsClient {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public ResponseEntity<NotificationDTO> send(NotificationDTO notificacion) {
-        String url = "http://sms:8083/api/sms/send";
+        String url = "http://localhost:8083/api/sms/send";
         return restTemplate.postForEntity(url,notificacion, NotificationDTO.class);
     }
 }
