@@ -1,5 +1,6 @@
 package com.api.notifications.client;
 import dto.NotificationDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -7,11 +8,12 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class EmailClient {
 
+    @Value("${client.email.url}")
+    private String url;
     private final RestTemplate restTemplate = new RestTemplate();
 
 
     public ResponseEntity<NotificationDTO> send(NotificationDTO notificacion) {
-        String url = "https://email-production-59f5.up.railway.app/api/email/send";
         return restTemplate.postForEntity(url, notificacion, NotificationDTO.class);
     }
 }

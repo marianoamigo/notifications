@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.api</groupId>
-	<artifactId>notificationModels</artifactId>
+	<artifactId>notification</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
-	<name>notificationModels</name>
+	<name>notification</name>
 	<description>API REST for challenge with Spring boot</description>
 	<properties>
 		<java.version>21</java.version>
