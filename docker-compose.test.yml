@@ -3,9 +3,9 @@ services:
     build: 
       context: . # Ruta al directorio donde está el Dockerfile del monolito notifications
       dockerfile: Dockerfile.test
-    mem_limit: 512m
+    mem_limit: 1024m
     environment:
-      JAVA_TOOL_OPTIONS: -Xmx256m -Xms128m
+      JAVA_TOOL_OPTIONS: -Xmx512m -Xms256m
       SPRING_DATASOURCE_URL: jdbc:postgresql://notifications_dbtest:5432/challengenoti_test
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: mariano
@@ -20,13 +20,13 @@ services:
         condition: service_healthy
     command: >
       sh -c "
-      MAVEN_OPTS='-Xmx256m' ./mvnw clean verify -Dtest=com.api.notifications.ControllerTestSuite &&
+      MAVEN_OPTS='-Xmx512m' ./mvnw clean verify -Dtest=com.api.notifications.ControllerTestSuite &&
       echo '---------------- TESTS TERMINADOS ----------------'
       "
 
   notifications_dbtest:
     image: postgres:16
-    mem_limit: 512m
+    mem_limit: 1024m
     environment:
       POSTGRES_DB: challengenoti_test
       POSTGRES_USER: postgres
