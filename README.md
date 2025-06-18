@@ -68,7 +68,7 @@ if the controller provide the proper answer the has passed.
 
 ## Route
 
-- : [!API Swagger] (http://localhost:8080/swagger-ui/index.html#/)
+- : [!API Swagger](https://notifications-marianoamigo-c976dbe919cf.herokuapp.com//swagger-ui/index.html#/)
 
 ## Badges
 
