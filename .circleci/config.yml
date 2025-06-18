@@ -32,10 +32,6 @@ jobs:
           name: Clean up
           when: always
           command: docker compose -f docker-compose.test.yml down --volumes
-      - run:
-          name: Generate coverage report and send to Coveralls
-          command: |
-            mvn clean test jacoco:report coveralls:report
 workflows:
   version: 2
   build_and_test_workflow:

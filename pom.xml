@@ -148,13 +148,17 @@
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
+						<phase>initialize</phase>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
+						<configuration>
+							<propertyName>jacoco.argLine</propertyName>
+						</configuration>
 					</execution>
 					<execution>
 						<id>report</id>
-						<phase>prepare-package</phase>
+						<phase>verify</phase>
 						<goals>
 							<goal>report</goal>
 						</goals>
@@ -200,7 +204,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0-M9</version>
 				<configuration>
-					<argLine>-javaagent:${settings.localRepository}/org/mockito/mockito-core/5.17.0/mockito-core-5.17.0.jar</argLine>
+					<argLine>${jacoco.argLine}</argLine> <!-- IntelliJ puede marcar esto como error, pero está bien -->
 				</configuration>
 			</plugin>
 		</plugins>
