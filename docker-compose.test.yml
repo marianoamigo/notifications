@@ -13,6 +13,7 @@ services:
       SECURITY_JWT_ISSUER: Main
       SECURITY_JWT_TTL_MILLIS: 3600000
       SPRING_PROFILES_ACTIVE: test
+      SPRING_MAIN_LOGGING_LEVEL_ROOT: WARN
     depends_on:
       notifications_dbtest:
         condition: service_healthy
