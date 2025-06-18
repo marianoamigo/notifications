@@ -1,0 +1,39 @@
+version: 2.1
+# no va ORBS porque no es compatible con Java 21
+jobs:
+  build_and_test:
+    docker:
+      - image: cimg/openjdk:21.0
+    steps:
+      - checkout
+      - setup_remote_docker:
+            docker_layer_caching: true
+      - run:
+          name: Run tests with docker-compose
+          command: |
+            docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
+      - run:
+          name: Check test container exit code
+          command: |
+            # Ajusta el nombre del container según tu docker-compose.test.yml
+            CONTAINER_NAME=$(docker ps -a --filter "name=app_notifications_test" --format "{{.Names}}" | head -n1)
+            if [ -z "$CONTAINER_NAME" ]; then
+              echo "Test container no encontrado"
+              exit 1
+            fi
+            EXIT_CODE=$(docker inspect $CONTAINER_NAME --format='{{.State.ExitCode}}')
+            echo "Test container exit code: $EXIT_CODE"
+            if [ "$EXIT_CODE" != "0" ]; then
+              echo "Tests failed"
+              exit 1
+            fi
+      - run:
+          name: Clean up
+          when: always
+          command: docker compose -f docker-compose.test.yml down --volumes
+workflows:
+  version: 2
+  build_and_test_workflow:
+    jobs:
+      - build_and_test
+  
