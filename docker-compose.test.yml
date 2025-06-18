@@ -1,7 +1,7 @@
 services:
   app_notifications_test:
     build: 
-      context: ./notifications # Ruta al directorio donde está el Dockerfile del monolito notifications
+      context: . # Ruta al directorio donde está el Dockerfile del monolito notifications
       dockerfile: Dockerfile.test
     mem_limit: 512m
     environment:
