@@ -70,6 +70,10 @@ if the controller provide the proper answer the has passed.
 
 - : [!API Swagger] (http://localhost:8080/swagger-ui/index.html#/)
 
+## Badges
+
+- [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/Wq8nEZd7atJLD5Qphnkt6z/PzRqUM7TwxxKuVXDRYDscz/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/Wq8nEZd7atJLD5Qphnkt6z/PzRqUM7TwxxKuVXDRYDscz/tree/master)
+
 ## Env vars should be defined 
 
 To find an example of the values you can use .env.example
