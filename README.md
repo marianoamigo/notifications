@@ -3,6 +3,12 @@
 You have to develop a basic Notifications management system for authenticated users. 
 The system has to allow every logged user to manage and send notificationModels by different channels. 
 
+## Badges
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/Wq8nEZd7atJLD5Qphnkt6z/PzRqUM7TwxxKuVXDRYDscz/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/Wq8nEZd7atJLD5Qphnkt6z/PzRqUM7TwxxKuVXDRYDscz/tree/master)
+
+[![Coverage Status](https://coveralls.io/repos/github/marianoamigo/notifications/badge.svg?branch=master)](https://coveralls.io/github/marianoamigo/notifications?branch=master)
+
 ### Features 
 
 - Create new Users 
@@ -70,9 +76,6 @@ if the controller provide the proper answer the has passed.
 
 - : [!API Swagger](https://notifications-marianoamigo-c976dbe919cf.herokuapp.com//swagger-ui/index.html#/)
 
-## Badges
-
-- [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/Wq8nEZd7atJLD5Qphnkt6z/PzRqUM7TwxxKuVXDRYDscz/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/Wq8nEZd7atJLD5Qphnkt6z/PzRqUM7TwxxKuVXDRYDscz/tree/master)
 
 ## Env vars should be defined 
 
